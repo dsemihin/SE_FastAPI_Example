@@ -1,26 +1,29 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from transformers import pipeline
 from pydantic import BaseModel
-
 
 class Item(BaseModel):
     text: str
 
-
 app = FastAPI()
 classifier = pipeline("sentiment-analysis")
 
-
 @app.get("/")
 def root():
-    return {"FastApi service started!"}
+    return {"message": "FastAPI service started!"}
 
-
-@app.get("/{text}")
-def get_params(text: str):
-    return classifier(text)
-
+@app.get("/analyze/{text}")
+def analyze_text(text: str):
+    try:
+        result = classifier(text)
+        return {"text": text, "analysis": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error during analysis: {str(e)}")
 
 @app.post("/predict/")
 def predict(item: Item):
-    return classifier(item.text)
+    try:
+        result = classifier(item.text)
+        return {"text": item.text, "analysis": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error during analysis: {str(e)}")
