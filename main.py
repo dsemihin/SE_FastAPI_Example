@@ -13,7 +13,7 @@ classifier = pipeline("sentiment-analysis")
 
 @app.get("/")
 def root():
-    return {"FastApi service started!"}
+    return {"FastApi service started! You can write some text in url /{text} to get params. Also you can make a post query with address /predict/ and field 'text'"}
 
 
 @app.get("/{text}")
