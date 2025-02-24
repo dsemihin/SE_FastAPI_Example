@@ -16,6 +16,11 @@ def root():
     return {"FastApi service started!"}
 
 
+@app.get("/about")
+def about():
+    return {"This service let you get the sentiment of your text"}
+
+
 @app.get("/{text}")
 def get_params(text: str):
     return classifier(text)
