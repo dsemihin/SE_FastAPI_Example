@@ -34,5 +34,5 @@ def predict(item: Item):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     finally:
-        print('Запрос выполнен')
+        print('Запрос выполнен!')
     return classifier(item.text)
