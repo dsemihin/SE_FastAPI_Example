@@ -24,3 +24,14 @@ def get_params(text: str):
 @app.post("/predict/")
 def predict(item: Item):
     return classifier(item.text)
+
+users = [
+    {"id": 1, "name": "Alice", "age": 30},
+    {"id": 2, "name": "Bob", "age": 25},
+    {"id": 3, "name": "Charlie", "age": 35},
+]
+
+@app.get("/users", summary="Get all users", description="This endpoint returns a list of users.")
+def get_users():
+    return users
+
