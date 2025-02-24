@@ -6,6 +6,8 @@ from pydantic import BaseModel
 class Item(BaseModel):
     text: str
 
+class Items(BaseModel):
+    texts: List[str]
 
 app = FastAPI()
 classifier = pipeline("sentiment-analysis")
@@ -24,3 +26,7 @@ def get_params(text: str):
 @app.post("/predict/")
 def predict(item: Item):
     return classifier(item.text)
+
+@app.post("/predict-batch/")
+def predict_batch(items: Items):
+    return classifier(items.texts)
