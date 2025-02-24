@@ -11,16 +11,19 @@ app = FastAPI()
 classifier = pipeline("sentiment-analysis")
 
 
+# Health cheack
 @app.get("/")
 def root():
     return {"FastApi service started!"}
 
 
+# Text view from link
 @app.get("/{text}")
 def get_params(text: str):
     return classifier(text)
 
 
+# Prediction item
 @app.post("/predict/")
 def predict(item: Item):
     return classifier(item.text)
