@@ -13,12 +13,15 @@ classifier = pipeline("sentiment-analysis")
 
 @app.get("/")
 def root():
-    return {"FastApi service started!"}
+    return {'message': "FastApi service started!"}
 
 
 @app.get("/{text}")
 def get_params(text: str):
-    return classifier(text)
+    try:
+        return classifier(text)
+    except:
+        return {'message': 'Ошибка классификации'}
 
 
 @app.post("/predict/")
