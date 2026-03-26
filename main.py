@@ -8,8 +8,12 @@ class Item(BaseModel):
 
 
 app = FastAPI()
-classifier = pipeline("sentiment-analysis")
-
+try:
+    model = pipeline("sentiment-analysis")
+    logger.info("Модель загружена")
+except Exception as e:
+    logger.error(f"Модель не загружена: {e}")
+    model = None
 
 @app.get("/")
 def root():
