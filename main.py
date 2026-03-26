@@ -13,7 +13,11 @@ classifier = pipeline("sentiment-analysis")
 
 @app.get("/")
 def root():
-    return {"FastApi service started!"}
+    return {
+        "status": "FastApi service started!",
+        "model_type": classifier.model.config.model_type,
+        "model_name": classifier.model.config._name_or_path,
+    }
 
 
 @app.get("/{text}")
