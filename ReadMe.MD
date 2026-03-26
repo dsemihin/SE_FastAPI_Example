@@ -1,3 +1,8 @@
+## Участники
+Киреева Анастасия Игоревна - knjknj5625
+Тихомиров Алексей Константинович - bultaming
+
+
 # Sentiment Analysis API
 
 Проект является Fork продолжением репозитория великого человека: https://github.com/dsemihin/SE_FastAPI_Example
