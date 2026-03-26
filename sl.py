@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-DATASET = """https://huggingface.co/datasets/ankislyakov/titanic/resolve/main/titanic_train.csv"""
+DS_NAME = """https://huggingface.co/datasets/ankislyakov/titanic/resolve/main/titanic_train.csv"""
 
 # 1. Заголовки и текст
 st.title("Анализ данных Титаника")
