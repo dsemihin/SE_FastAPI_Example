@@ -1,14 +1,30 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from transformers import pipeline
 from pydantic import BaseModel
+from typing import List
 
 
 class Item(BaseModel):
     text: str
 
 
-app = FastAPI()
-classifier = pipeline("sentiment-analysis")
+class PredictionResult(BaseModel):
+    label: str
+    score: float
+
+
+ml_models = {}
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    ml_models["classifier"] = pipeline("sentiment-analysis")
+    yield
+    ml_models.clear()
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 @app.get("/")
@@ -20,11 +36,11 @@ def root():
 def get_params(text: str):
     if not text.strip():
         raise HTTPException(status_code=400, detail="Text cannot be empty")
-    return classifier(text)
+    return ml_models["classifier"](text)
 
 
-@app.post("/predict/")
+@app.post("/predict/", response_model=List[PredictionResult])
 def predict(item: Item):
     if not item.text.strip():
         raise HTTPException(status_code=400, detail="Text cannot be empty")
-    return classifier(item.text)
+    return ml_models["classifier"](item.text)
