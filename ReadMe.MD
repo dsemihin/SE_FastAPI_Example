@@ -25,7 +25,7 @@ uvicorn main:app --reload
 Проверка работоспособности сервиса.
 
 ```bash
-curl http://localhost:8000/
+curl http://localhost:8000/status
 ```
 
 Ответ:
