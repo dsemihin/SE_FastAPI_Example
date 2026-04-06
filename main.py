@@ -1,15 +1,20 @@
 import logging
+from logging.handlers import RotatingFileHandler
 from fastapi import FastAPI
 from transformers import pipeline
 from pydantic import BaseModel
 
-logging.basicConfig(
-    filename="app.log",
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+handler = RotatingFileHandler(
+    "app.log", 
+    maxBytes=10*1024*1024, #10MB per file
+    backupCount=5
 )
+formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+handler.setFormatter(formatter)
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+logger.addHandler(handler)
 
 class Item(BaseModel):
     text: str
