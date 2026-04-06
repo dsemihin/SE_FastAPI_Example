@@ -25,7 +25,7 @@ uvicorn main:app --reload
 Проверка работоспособности сервиса.
 
 ```bash
-curl http://localhost:8000/status
+curl http://localhost:8000/
 ```
 
 Ответ:
@@ -46,7 +46,7 @@ curl "http://localhost:8000/I%20love%20this%20product"
 
 ---
 
-### `POST /predict/`
+### `GET /predict/`
 Анализ тональности текста, переданного в теле запроса.
 
 ```bash
