@@ -1,59 +1,70 @@
 import streamlit as st
 import pandas as pd
 
-DS_NAME = """https://huggingface.co/datasets/ankislyakov/titanic/resolve/main/titanic_train.csv"""
+# URL del conjunto de datos del Titanic en Hugging Face
+DS_NAME = """https://huggingface.co/datasets/ankislyakov/titanic/resolve/main/titanic_train"""
 
-# 1. Заголовки и текст
-st.title("Анализ данных Титаника")
+# 1. Títulos y texto
+st.title("Análisis de datos del Titanic")
 
-st.write("Задание 1:")
-age = st.slider("Возраст:", min_value=0, max_value=100, value=25)
-st.write(f"Анализ {age} лет.")
+st.write("Tarea 1:")
+# Slider para seleccionar la edad (0-100 años, valor inicial 25)
+age = st.slider("Edad:", min_value=0, max_value=100, value=25)
+st.write(f"Análisis de {age} años.")
+# Cargar los datos del Titanic desde la URL
 titanic = pd.read_csv(
     DS_NAME,
     index_col="PassengerId",
 )
+# Filtrar pasajeros menores de la edad seleccionada
 df = titanic[(titanic["Age"] < age)]["Survived"]
 
+# Filtrar hombres muertos mayores de la edad seleccionada, agrupados por puerto de embarque
 df = titanic[(titanic["Sex"] == "male") & (titanic["Survived"] == 0) & (titanic["Age"] > age)]
 df = df.groupby("Embarked").size().reset_index(name="Count")
 
 st.subheader(
-    """Подсчитать количество погибших мужчин старше указанного
-    возраста по каждому пункту посадки:"""
+    """Contar el número de hombres muertos mayores de la edad
+    especificada por cada puerto de embarque:"""
 )
 
 st.dataframe(df)
+# Barra lateral con configuraciones
 with st.sidebar:
-    st.header("Настройки")
-    confidence = st.slider("Порог уверенности модели:", 0.0, 1.0, 0.8)
-    st.info(f"Порог уверенности: {confidence}")
+    st.header("Configuración")
+    # Slider para el umbral de confianza del modelo (0.0-1.0, valor inicial 0.8)
+    confidence = st.slider("Umbral de confianza del modelo:", 0.0, 1.0, 0.8)
+    st.info(f"Umbral de confianza: {confidence}")
 
-st.write("Задание 2:")
+st.write("Tarea 2:")
 
+# Radio buttons para seleccionar el tipo de estadística a mostrar
 survival_choice = st.radio(
-    "Выберите тип статистики:",
-    ["Показать выживших", "Показать погибших"],
+    "Seleccione el tipo de estadísticas:",
+    ["Mostrar supervivientes", "Mostrar muertos"],
     horizontal=True,
 )
 
 display_choice = st.radio(
-    "Выберите способ отображения:",
-    ["Показать проценты", "Показать только количество"],
+    "Seleccione el método de visualización:",
+    ["Mostrar porcentajes", "Mostrar solo cantidad"],
     horizontal=True,
 )
 
-if survival_choice == "Показать выживших":
+# Filtrar datos según la selección del usuario
+if survival_choice == "Mostrar supervivientes":
     survived_data = titanic[titanic["Survived"] == 1]
-    title = "Статистика выживших"
+    title = "Estadísticas de supervivientes"
 else:
     survived_data = titanic[titanic["Survived"] == 0]
-    title = "Статистика погибших"
+    title = "Estadísticas de muertos"
 
+# Contar hombres y mujeres en los datos filtrados
 men_count = len(survived_data[survived_data["Sex"] == "male"])
 women_count = len(survived_data[survived_data["Sex"] == "female"])
 total_count = len(survived_data)
 
+# Calcular porcentajes si hay datos
 if total_count > 0:
     men_percentage = (men_count / total_count) * 100
     women_percentage = (women_count / total_count) * 100
@@ -62,11 +73,12 @@ else:
 
 st.subheader(title)
 
-if display_choice == "Показать проценты":
+# Mostrar resultados en formato de porcentaje o cantidad
+if display_choice == "Mostrar porcentajes":
     results_df = pd.DataFrame(
         {
-            "Пол": ["Мужчины", "Женщины", "Всего"],
-            "Процент": [f"{men_percentage:.1f}%", f"{women_percentage:.1f}%",
+            "Género": ["Hombres", "Mujeres", "Total"],
+            "Porcentaje": [f"{men_percentage:.1f}%", f"{women_percentage:.1f}%",
                         "100%"],
         }
     )
@@ -74,10 +86,10 @@ if display_choice == "Показать проценты":
 else:
     results_df = pd.DataFrame(
         {
-            "Пол": ["Мужчины", "Женщины", "Всего"],
-            "Количество": [men_count, women_count, total_count],
+            "Género": ["Hombres", "Mujeres", "Total"],
+            "Cantidad": [men_count, women_count, total_count],
         }
     )
 
 st.table(results_df)
-st.info(f"Проанализированы данные {total_count} пассажиров")
+st.info(f"Se analizaron datos de {total_count} pasajeros")
