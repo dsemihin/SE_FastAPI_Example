@@ -52,7 +52,7 @@ curl "http://localhost:8000/I%20love%20this%20product"
 ```bash
 curl -X POST "http://localhost:8000/predict/" \
      -H "Content-Type: application/json" \
-     -d '{"text": "I love this product"}'
+     -d '{"message": "I love this product"}'
 ```
 
 Ответ:
