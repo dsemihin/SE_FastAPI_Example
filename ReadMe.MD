@@ -46,7 +46,7 @@ curl "http://localhost:8000/I%20love%20this%20product"
 
 ---
 
-### `GET /predict/`
+### `POST /predict/`
 Анализ тональности текста, переданного в теле запроса.
 
 ```bash
