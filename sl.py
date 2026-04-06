@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # URL del conjunto de datos del Titanic en Hugging Face
-DS_NAME = """https://huggingface.co/datasets/ankislyakov/titanic/resolve/main/titanic_train"""
+DS_NAME = """https://huggingface.co/datasets/ankislyakov/titanic/resolve/main/titanic_train.csv"""
 
 # 1. Títulos y texto
 st.title("Análisis de datos del Titanic")
